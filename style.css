@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body{
+    font-family: kldz-n4, adobe-notdef;    ;
+}
+
+/*navbar*/
+
+#navbar {
+  height: 20vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+#title {
+  margin: 2rem 2rem;
+  font-size: 50px;
+}
+
+#action-container {
+  margin: 2rem 1.5rem;
+  height: 18vh;
+  display: flex;
+  flex-direction: row;
+}
+
+#buttons-container {
+  height: 18vh;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+/*bottoni*/
+
+button {
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  border: none;
+}
+
+#buttons-container button {
+  margin-right: 16px;
+}
+
+button img {
+  height: 40px;
+  width: 40px;
+}
+
+/* switch */
+
+#switch-container{
+    position: absolute;
+    top: 2.7rem;
+    right: 30%;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  height: 34px;
+  width: 60px;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 36px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 10px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* slogan */
+
+#slogan-container{
+    margin-top: 12vh;
+    display: grid;
+	place-items: center;
+}
+
+#slogan{
+    font-size: 80px;
+}
+
+#raccomandation{
+    font-size: 30px;
+}

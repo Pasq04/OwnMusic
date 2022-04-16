@@ -4,6 +4,9 @@ const { connected } = require('process');
 const { access } = require('fs');
 const { URLSearchParams } = require('url');
 const { param } = require('express/lib/request');
+const { response } = require('express');
+const { executionAsyncResource } = require('async_hooks');
+const { createSecretKey } = require('crypto');
 const app = express();
 
 const client_id = '5a8e7302edf84f4c99226342b14e41b7'; //ID dell'applicazione nel server di Spotify
@@ -13,6 +16,7 @@ const client_secret = "b44d22a80f464700a595a8c71ef64734";
 let access_token; //token di accesso per eseguire le request
 let refresh_token; //codice per richiedere un altro token di accesso(vedi Request 2 e 3)
 let options; //opzioni per inviare le request all'API
+let token_type; //tipo di token(sempre "Bearer")
 
 app.use(express.json());
 
@@ -35,19 +39,17 @@ let generateRandomString = (lenght) => {
 
 //Request 1: Autorizzazione dell'utente
 app.get('/login', (req, res) => {
-    console.log("Request 1 iniziata");
     let state = generateRandomString(16);
     let scope = "user-read-private user-read-email";
 
-    console.log("Sto comunicando con Spotify");
     res.redirect(`https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`);
 });
 
-app.get('/callback', (req, res) => {
-    console.log("Ho ricevuto qualcosa");
-    const code = req.query.code || null;
-
-    console.log("tento di inviare");
+//Request 2: Richiesta del token di accesso e accesso all'account dell'utente
+app.get('/callback', (req, res) =>{
+    let code = req.query.code || null;
+    
+    //richiesta del token di accesso
     axios({
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',
@@ -57,95 +59,60 @@ app.get('/callback', (req, res) => {
             redirect_uri: redirect_uri
         }),
         headers: {
-            "content-type": 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
-        },
-    })
-    .then(response => {
-        if (response.status === 200) {
-            res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
-        }    
-        else{
-            res.send( response);
+            Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
+            "content-type": "application/x-www-form-urlencoded"
         }
     })
-    .catch(error => res.send(error));
+    .then(response => {
+        if(response.status === 200){
+            //res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
+            access_token = response.data.access_token;
+            token_type = response.data.token_type;
+            refresh_token = response.data.refresh_token; //Fino a mo ok!!
+
+            //utilizzo del token di accesso per accedere all'account
+            axios.get("https://api.spotify.com/v1/me", {
+                headers: {
+                    Authorization: `${token_type} ${access_token}`
+                }
+            })
+            .then(response => {
+                res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
+            })
+            .catch(err => res.send(err));
+            
+        }
+        else{
+            res.send(response);
+        }
+    })
+    .catch(err => res.send(err));
 });
 
-/*
-//Request 2: Richiesta del token di accesso
-app.get('/callback', (req, res) => {
-    let code = req.query.code || null;
-    let state = req.query.state || null;
-
-    if(state === null){ //controlla se lo state restituito è giusto
-        res.redirect(`/#?error=state_mismatch`);
-    }
-    else{
-        var authOptions = {
-            data: {
-              code: code,
-              redirect_uri: redirect_uri,
-              grant_type: 'authorization_code'
-            },
-            headers: {
-              'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
-            },
-            responseType: 'json'
-        };
-    }
-
-    //accesso all'API
-    axios.post('https://accounts.spotify.com/api/token', authOptions)
-        .then((res, body) => {
-            if(res.statusCode === 200){
-                console.log("accesso all'API");
-
-                access_token = body.access_token;
-                refresh_token = body.refresh_token;
-
-                options = {
-                    method: 'get',
-                    headers: {
-                        'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')) //ERRORE Invalid client_id
-                    },
-                    responseType: 'json'
-                };
-
-                //Uso il Token di Accesso
-                console.log("Utilizzo il Token di Accesso");
-                axios(options).then(body => console.log(body.headers));
-            }
-        })
-        .catch(err => console.error(err));
-});
-*/
-//Request 3: Richiesta di un nuovo token di accesso
-app.get('/refresh-token', (req, res) => {
-    refresh_token = req.query.refresh_token;
-
-    let authOptions = {
-        data: {
+//Request 3: richiesta di un nuovo token di accesso (Per il test eseguire prima Request 1 sennò non hai il refresh-token)
+app.get("/refresh-token", (req, res) => {
+    axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        data: new URLSearchParams({
             grant_type: 'refresh_token',
             refresh_token: refresh_token
-        },
+        }),
         headers: {
-            'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
-        },
-        responseType: 'json'
-    };
-
-    //richiesta del nuovo codice di accesso
-    axios.post('https://accounts.spotify.com/api/token', authOptions)
-        .then((res, body) => {
-            if(response.statusCode === 200){
-                access_token = body.access_token;
-                res.send({
-                    'access_token': access_token
-                });
-            }
-        })
-        .catch(err => console.error(err));
+            Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
+            "content-type": "application/x-www-form-urlencoded"
+        }
+    })
+    .then(response => {
+        if(response.status === 200){
+            res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
+            access_token = response.data.access_token;
+        }
+        else{
+            res.send(response);
+        }
+    })
+    .catch(err => res.send(err));
 });
 
 //listen

@@ -2,9 +2,9 @@
   "name": "ownmusic",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -12,6 +12,10 @@
   "dependencies": {
     "axios": "^0.26.1",
     "express": "^4.17.3",
-    "jquery": "^3.6.0"
+    "jquery": "^3.6.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }

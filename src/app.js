@@ -7,6 +7,8 @@ const { param } = require('express/lib/request');
 const { response } = require('express');
 const { executionAsyncResource } = require('async_hooks');
 const { createSecretKey } = require('crypto');
+const { resolveSoa } = require('dns');
+const cors = require('cors');
 const app = express();
 
 const client_id = '5a8e7302edf84f4c99226342b14e41b7'; //ID dell'applicazione nel server di Spotify
@@ -17,8 +19,16 @@ let access_token; //token di accesso per eseguire le request
 let refresh_token; //codice per richiedere un altro token di accesso(vedi Request 2 e 3)
 let options; //opzioni per inviare le request all'API
 let token_type; //tipo di token(sempre "Bearer")
+let expires_in; //tempo in cui è valido il token di accesso(in secondi)
 
 app.use(express.json());
+
+//Opzioni CORS
+const corsOptions = {
+    origin: '*',
+    credetials: true, 
+};
+app.use(cors(corsOptions));
 
 /**
  * Funzione che genera stringhe random che contengono lettere e numeri
@@ -40,8 +50,7 @@ let generateRandomString = (lenght) => {
 //Request 1: Autorizzazione dell'utente
 app.get('/login', (req, res) => {
     let state = generateRandomString(16);
-    let scope = "user-read-private user-read-email";
-
+    let scope = "ugc-image-upload user-modify-playback-state user-read-playback-state user-read-currently-playing user-follow-modify user-follow-read user-read-recently-played user-read-playback-position user-top-read playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private app-remote-control streaming user-read-email user-read-private user-library-modify user-library-read";
     res.redirect(`https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`);
 });
 
@@ -68,29 +77,51 @@ app.get('/callback', (req, res) =>{
             //res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
             access_token = response.data.access_token;
             token_type = response.data.token_type;
-            refresh_token = response.data.refresh_token; //Fino a mo ok!!
+            refresh_token = response.data.refresh_token;
+            expires_in = response.data.expires_in;
 
-            //utilizzo del token di accesso per accedere all'account
-            axios.get("https://api.spotify.com/v1/me", {
-                headers: {
-                    Authorization: `${token_type} ${access_token}`
-                }
-            })
-            .then(response => {
-                res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
-            })
-            .catch(err => res.send(err));
-            
+            res.redirect(`http://localhost:5501/pages/dashboard/dashboard.html?${new URLSearchParams({
+                access_token: access_token,
+                refresh_token: refresh_token,
+                expires_in: expires_in
+            })}`);
+
         }
         else{
-            res.send(response);
+            res.redirect(`/?${new URLSearchParams({
+                error: "invalid token"
+            })}`);
         }
     })
     .catch(err => res.send(err));
 });
 
 //Request 3: richiesta di un nuovo token di accesso (Per il test eseguire prima Request 1 sennò non hai il refresh-token)
-app.get("/refresh-token", (req, res) => {
+app.get("/refresh-token", (req, res) => { 
+    console.log("HI");
+    const { refresh_token } = req.query;
+    console.log(refresh_token);
+
+
+    axios({
+        method: 'post',
+        url: 'https://accounts.spotify.com/api/token',
+        data: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: refresh_token
+        }),
+        headers: {
+          'content-type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
+        },
+      })
+        .then(response => {
+          res.send(response.data);
+        })
+        .catch(error => {
+          res.send(error);
+        });
+/*
     axios({
         method: 'post',
         url: 'https://accounts.spotify.com/api/token',
@@ -113,6 +144,7 @@ app.get("/refresh-token", (req, res) => {
         }
     })
     .catch(err => res.send(err));
+*/
 });
 
 //listen

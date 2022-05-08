@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title>Dashboard</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <!--
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        -->
+        <link rel="stylesheet" href="/styles/header.css">
+        <link rel="stylesheet" href="/styles/dashboard.css">
+        <script src="/src/play.js"></script>
+    </head>
+    <body>
+        <nav id="navbar">
+            <div id="user">
+                <div id="fromSpotify"></div><!--display_name e user_image-->
+                <div id="switch-container">
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div id="action-container">
+                <ul id="buttons-container">
+                    <li class="action-button"><button><a href="/pages/search.html"><img src="/icons/magnifying-glass.png" class="icon"></a></button></li>
+                    <li class="action-button"><button><a href="/pages/search.html"><img src="/icons/loving.png" class="icon"></a></button></li>
+                    <li class="action-button"><button><a href=""><img src="/icons/plus.png" class="icon"></a></button></li>
+                    <li class="action-button"><button><a href=""><img src="/icons/playlist.png" class="icon"></a></button></li>
+                    <li class="action-button"><button><a href="/pages/library.html"><img src="/icons/library.png" class="icon"></a></button></li>
+                    <li class="action-button"><button id="logout">Logout</button></li>
+                    
+                    
+                </ul>
+            </div>    
+        </nav>
+        
+        <!--right menu-->
+        <section class="right-menu">
+            <div id="coda" class="right-menu-element">
+                <h2>Coda</h2>
+            </div><!--coda di riporduzione-->
+            <div id="artisti-preferiti" class="right-menu-element">
+                <h2>Artisti Preferiti</h2>
+            </div>
+            <div id="player" class="right-menu-element"></div>
+            <div id="play-container">
+                <button id="togglePlay">Play</button>
+            </div>
+        </section>
+        
+        <!--Generi preferiti-->
+        <section id="genres">
+            <h2 class="main-section-title">I tuoi generi preferiti</h2>
+            <div id="genre-container">
+
+            </div>
+        </section>
+        
+        <!--Ascoltati di recente-->
+        <section id="recently-played">
+            <h2 class="main-section-title">Ascoltati di recente</h2>
+            <div id="recently-container">
+
+            </div>
+        </section>
+
+        <!--Le tue playlist-->
+        <section id="playlists">
+            <h2 class="main-section-title">Le tue playlist</h2>
+            <div id="playlist-container">
+
+            </div>
+        </section>
+        <script src="./dashboard.js" type="module"></script>
+    </body>
+</html>

@@ -1,0 +1,72 @@
+
+/* ================================================================== */
+/* Index */
+/* ================================================================== */
+
+/* slogan */
+
+#slogan-container{
+    margin-top: 12vh;
+    display: grid;
+	  place-items: center;
+}
+
+#slogan{
+    text-align: center;
+    font-size: 80px;
+}
+
+#raccomandation{
+    text-align: center;
+    font-size: 30px;
+}
+
+@media (max-width: 767px) {
+  #slogan{
+    font-size: 50px;
+  }
+  #raccomandation{
+    font-size: 25px;
+  }
+}
+
+/* Form */
+
+.input-container{
+  display: flex;
+  flex-direction: column;
+  margin: 5vh auto;
+  align-items: center;
+}
+
+.input-container p{
+  font-size: 24px;
+}
+
+.input-container input{
+  margin-top: 3vh;
+  width: 20%;
+  height: 5vh;
+  border: none;
+  background-color: #2196f3;
+  border-radius: 20px;
+}
+
+.input-container button{
+  margin-top: 3vh;
+  width: 15vw;
+  height: 7vh;
+  border-radius: 30px;
+}
+
+@media (max-width: 767px) {
+  .input-container input{
+    width: 20%;
+    height: 5vh;
+  }
+
+  .input-container button{
+    width: 15vw;
+    height: 7vh;
+  }
+}

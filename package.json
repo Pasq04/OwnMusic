@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "proxy": "http://localhost:5500",
   "scripts": {
     "start": "nodemon src/app.js"
   },
@@ -11,8 +12,10 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.26.1",
+    "cors": "^2.8.5",
     "express": "^4.17.3",
     "jquery": "^3.6.0",
+    "unpkg": "^0.2.0",
     "url": "^0.11.0"
   },
   "devDependencies": {

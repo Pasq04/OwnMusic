@@ -80,7 +80,7 @@ app.get('/callback', (req, res) =>{
             refresh_token = response.data.refresh_token;
             expires_in = response.data.expires_in;
 
-            res.redirect(`http://localhost:5501/pages/tracks/tracks.html?${new URLSearchParams({
+            res.redirect(`http://localhost:5501/pages/main/main.html?${new URLSearchParams({
                 access_token: access_token,
                 refresh_token: refresh_token,
                 expires_in: expires_in
@@ -98,9 +98,7 @@ app.get('/callback', (req, res) =>{
 
 //Request 3: richiesta di un nuovo token di accesso (Per il test eseguire prima Request 1 sennò non hai il refresh-token)
 app.get("/refresh-token", (req, res) => { 
-    console.log("HI");
     const { refresh_token } = req.query;
-    console.log(refresh_token);
 
 
     axios({
@@ -121,30 +119,6 @@ app.get("/refresh-token", (req, res) => {
         .catch(error => {
           res.send(error);
         });
-/*
-    axios({
-        method: 'post',
-        url: 'https://accounts.spotify.com/api/token',
-        data: new URLSearchParams({
-            grant_type: 'refresh_token',
-            refresh_token: refresh_token
-        }),
-        headers: {
-            Authorization: `Basic ${new Buffer.from(`${client_id}:${client_secret}`).toString('base64')}`,
-            "content-type": "application/x-www-form-urlencoded"
-        }
-    })
-    .then(response => {
-        if(response.status === 200){
-            res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
-            access_token = response.data.access_token;
-        }
-        else{
-            res.send(response);
-        }
-    })
-    .catch(err => res.send(err));
-*/
 });
 
 //listen

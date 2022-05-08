@@ -6,6 +6,7 @@
 body{
     display: flex;
     flex-direction: row;
+    font-family: 'Rubik', sans-serif;
 }
 
 .menu{
@@ -14,28 +15,12 @@ body{
     box-shadow: 1px 1px 10px #cccccc;
     display: flex;
     flex-direction: column;
+    position: fixed;
 }
 
 #name{
     margin: 3vh 1vw;
     font-size: 40px;
-}
-
-#fromSpotify{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-}
-
-#fromSpotify h1{
-    font-size: 24px;
-}
-
-#fromSpotify img{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
 }
 
 .navbar{

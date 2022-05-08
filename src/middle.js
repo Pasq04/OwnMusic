@@ -41,8 +41,7 @@ export const fetchArtist = async(id) => {
 export const fetchRecentlyPlayedTracks = async(limit) => {
     try{
         const { data } = await getRecentlyPlayed(limit);
-
-        console.log(data);
+        
         return data;
     }
     catch(e){

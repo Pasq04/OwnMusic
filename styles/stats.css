@@ -4,21 +4,27 @@
 }
 
 #stats-container{
-    position: absolute;
-    left: 20%;
-    top: 30%;
+    width: 64vw;
+    box-shadow: 1px 1px 4px #ccc;
+    margin-left: 25vw;
+    height: fit-content;
+}
+
+#result-type{
+    margin-top: 5vh;
+    text-align: center;
+    font-size: 60px;
 }
 
 #time-interval-bar{
-    position: relative;
-    left: 45%;
+    margin: 7vh 0;
     list-style: none;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
 }
 
 .time-interval-btn{
-    margin-right: 7vw;
     width: 7vw;
     height: 6vh;
     font-size: 20px;
@@ -26,7 +32,7 @@
     border: none;
     color: #3a354e;
     opacity: 0.4;
-    transition: all .4s linear;
+    transition: all .4s step-start;
 }
 
 .time-interval-btn:hover{
@@ -34,12 +40,41 @@
     border-bottom: 3px #3a354e solid;
 }
 
-.result-container{
-    margin-top: 5vh;
-}
-
-.track-container{
+.item-container{
+    margin: 5vh 4vw;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 10vh;
+}
+
+.item-info{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.item-container h2{
+    font-size: 20px;
+}
+
+.item-container p{
+    font-size: 18px;
+}
+
+.item-text{
+    width: 30vw;
+}
+
+.item-container img{
+    height: 80px;
+    width: 80px;
+    margin-right: 3vw;
+}
+
+.selected{
+    color: #3a354e;
+    border-bottom: #3a354e 3px solid;
+    opacity: 1;
 }

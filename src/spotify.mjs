@@ -92,32 +92,6 @@ const refresh_token = async() =>{
       } catch (e) {
         console.error(e);
       }
-
-
-    /*try{
-        //Logout se non c'è un refresh_token o siamo in un loop infinito di reload
-        if(!localStorage_values.refresh_token || localStorage_values.refresh_token === 'undefined' ||
-            (Date.now() - Number(localStorage_values.timestamp)) / 1000 < 1000){
-                console.error("Nessun refresh_token disponibile");
-                logout();
-            }
-        console.log("Sto provando a richiedere il nuovo token");
-        //Usa l'enpoint /refresh_token per prendere i dati
-        let newData = await axios(`http://localhost:5500/refresh-token?refresh_token=${refresh_token}`);
-        console.log(newData);
-
-        //Aggiorniamo i dati
-        console.log(`nuovo token di accesso: ${newData.access_token}`);
-        window.localStorage.setItem(localStorage_keys.access_token, newData.access_token);
-        window.localStorage.setItem(localStorage_keys.timestamp, Date.now());
-
-        //Aggiorna la pagina
-        window.location.reload();
-    }
-    catch(e){
-        console.error(e);
-    }
-    */
 };
 
 /**

@@ -11,7 +11,7 @@
   ],
   "proxy": "http://localhost:5500",
   "scripts": {
-    "start": "nodemon src/app.js",
+    "start": "node app.js",
     "build": "NODE_ENV=production && npm install && npm start"
   },
   "keywords": [],

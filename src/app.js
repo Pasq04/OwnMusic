@@ -18,6 +18,8 @@ const client_secret = process.env.CLIENT_SECRET; /*"b44d22a80f464700a595a8c71ef6
 const frontend_uri = process.env.FRONTEND_URI;
 const port = process.env.PORT || 5500;
 
+console.log(redirect_uri);
+
 let access_token; //token di accesso per eseguire le request
 let refresh_token; //codice per richiedere un altro token di accesso(vedi Request 2 e 3)
 let options; //opzioni per inviare le request all'API
@@ -54,11 +56,13 @@ let generateRandomString = (lenght) => {
 app.get('/login', (req, res) => {
     let state = generateRandomString(16);
     let scope = "ugc-image-upload user-modify-playback-state user-read-playback-state user-read-currently-playing user-follow-modify user-follow-read user-read-recently-played user-read-playback-position user-top-read playlist-read-collaborative playlist-modify-public playlist-read-private playlist-modify-private app-remote-control streaming user-read-email user-read-private user-library-modify user-library-read";
+    console.log("login");
     res.redirect(`https://accounts.spotify.com/authorize?response_type=code&client_id=${client_id}&scope=${scope}&redirect_uri=${redirect_uri}&state=${state}`);
 });
 
 //Request 2: Richiesta del token di accesso e accesso all'account dell'utente
 app.get('/callback', (req, res) =>{
+    console.log("callback");
     let code = req.query.code || null;
     
     //richiesta del token di accesso

@@ -4,16 +4,16 @@
   "description": "",
   "main": "app.js",
   "engines": {
-    "node": "14.15.0"
+    "node": "16.14.2"
   },
   "cacheDirectories":[
     "node_modules"
   ],
   "proxy": "http://localhost:5500",
   "scripts": {
-    "start": "npm start",
+    "start": "nodemon src/app.js",
     "build": "NODE_ENV=production && npm install && npm start",
-    "start-server": "node src/app.js"
+    "start-server": "node app.js"
   },
   "keywords": [],
   "author": "",

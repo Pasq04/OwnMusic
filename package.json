@@ -11,9 +11,9 @@
   ],
   "proxy": "http://localhost:5500",
   "scripts": {
-    "start": "npm start",
+    "start": "node src/app.js",
     "build": "NODE_ENV=production && npm install && npm start",
-    "start-server": "node app.js"
+    "start-server": "node src/app.js"
   },
   "keywords": [],
   "author": "",

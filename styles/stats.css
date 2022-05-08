@@ -1,0 +1,45 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#stats-container{
+    position: absolute;
+    left: 20%;
+    top: 30%;
+}
+
+#time-interval-bar{
+    position: relative;
+    left: 45%;
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+}
+
+.time-interval-btn{
+    margin-right: 7vw;
+    width: 7vw;
+    height: 6vh;
+    font-size: 20px;
+    background: none;
+    border: none;
+    color: #3a354e;
+    opacity: 0.4;
+    transition: all .4s linear;
+}
+
+.time-interval-btn:hover{
+    opacity: 1;
+    border-bottom: 3px #3a354e solid;
+}
+
+.result-container{
+    margin-top: 5vh;
+}
+
+.track-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

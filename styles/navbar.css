@@ -1,0 +1,74 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+}
+
+.menu{
+    width: 12vw;
+    height: 100vh;
+    box-shadow: 1px 1px 10px #cccccc;
+    display: flex;
+    flex-direction: column;
+}
+
+#name{
+    margin: 3vh 1vw;
+    font-size: 40px;
+}
+
+#fromSpotify{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#fromSpotify h1{
+    font-size: 24px;
+}
+
+#fromSpotify img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.navbar{
+    margin-top: 4vh;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.navbar li{
+    margin-bottom: 5.4vh;
+}
+
+.navbar li button{
+    width: 9vw;
+    height: 9vh;
+    background: none;
+    border: none;
+}
+
+.navbar img{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1vh;
+}
+
+.navbar li button{
+    color: #3a354e;
+    opacity: 0.55;
+    transition: all .3s ease-in;
+}
+
+.navbar li button:hover{
+    opacity: 1;
+}

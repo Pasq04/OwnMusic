@@ -80,7 +80,7 @@ app.get('/callback', (req, res) =>{
             refresh_token = response.data.refresh_token;
             expires_in = response.data.expires_in;
 
-            res.redirect(`http://localhost:5501/pages/dashboard/dashboard.html?${new URLSearchParams({
+            res.redirect(`http://localhost:5501/pages/tracks/tracks.html?${new URLSearchParams({
                 access_token: access_token,
                 refresh_token: refresh_token,
                 expires_in: expires_in

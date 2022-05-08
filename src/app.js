@@ -8,12 +8,15 @@ const { response } = require('express');
 const { executionAsyncResource } = require('async_hooks');
 const { createSecretKey } = require('crypto');
 const { resolveSoa } = require('dns');
+require('dotenv').config();
 const cors = require('cors');
 const app = express();
 
-const client_id = '5a8e7302edf84f4c99226342b14e41b7'; //ID dell'applicazione nel server di Spotify
-const redirect_uri = "http://localhost:5500/callback"; //link del sito(endpoint: /callback)
-const client_secret = "b44d22a80f464700a595a8c71ef64734";
+const client_id = process.env.CLIENT_ID; /*'5a8e7302edf84f4c99226342b14e41b7';*/ //ID dell'applicazione nel server di Spotify
+const redirect_uri = process.env.REDIRECT_URI;  /*"http://localhost:5500/callback";*/ //link del sito(endpoint: /callback)
+const client_secret = process.env.CLIENT_SECRET; /*"b44d22a80f464700a595a8c71ef64734";*/
+const frontend_uri = process.env.FRONTEND_URI;
+const port = process.env.PORT || 5500;
 
 let access_token; //token di accesso per eseguire le request
 let refresh_token; //codice per richiedere un altro token di accesso(vedi Request 2 e 3)
@@ -74,13 +77,12 @@ app.get('/callback', (req, res) =>{
     })
     .then(response => {
         if(response.status === 200){
-            //res.send(`<pre>${JSON. stringify(response.data,null, 2)}</pre>`);
             access_token = response.data.access_token;
             token_type = response.data.token_type;
             refresh_token = response.data.refresh_token;
             expires_in = response.data.expires_in;
 
-            res.redirect(`http://localhost:5501/pages/main/main.html?${new URLSearchParams({
+            res.redirect(`${frontend_uri}?${new URLSearchParams({
                 access_token: access_token,
                 refresh_token: refresh_token,
                 expires_in: expires_in
@@ -122,5 +124,5 @@ app.get("/refresh-token", (req, res) => {
 });
 
 //listen
-console.log("Listening on 5500");
-app.listen(5500);
+console.log(`Listening on port ${port}`);
+app.listen(port);

@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "16.14.2"
+  },
+  "cacheDirectories":[
+    "node_modules"
+  ],
   "proxy": "http://localhost:5500",
   "scripts": {
-    "start": "nodemon src/app.js"
+    "start": "npm start",
+    "build": "NODE_ENV=production && npm install && npm start",
+    "start-server": "node app.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +21,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "jquery": "^3.6.0",
     "unpkg": "^0.2.0",

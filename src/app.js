@@ -10,6 +10,7 @@ const { createSecretKey } = require('crypto');
 const { resolveSoa } = require('dns');
 require('dotenv').config();
 const cors = require('cors');
+const path = require('path');
 const app = express();
 
 const client_id = process.env.CLIENT_ID; /*'5a8e7302edf84f4c99226342b14e41b7';*/ //ID dell'applicazione nel server di Spotify
@@ -126,6 +127,10 @@ app.get("/refresh-token", (req, res) => {
           res.send(error);
         });
 });
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './build', 'index.html'));
+  });
 
 //listen
 console.log(`Listening on port ${port}`);
